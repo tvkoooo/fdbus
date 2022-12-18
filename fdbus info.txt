@@ -1,0 +1,11 @@
+    fdb_msg->mType = FDB_MT_REPLY;
+    fdb_msg->mFlag |= MSG_FLAG_REPLIED;
+    fdb_msg->setCallable(std::bind(&CFdbMessage::dispatchMsg, fdb_msg, _1));
+    if (!fdb_msg->mContext->sendAsync(msg_ref))
+    {
+        fdb_msg->mFlag &= ~MSG_FLAG_REPLIED;
+        fdb_msg->setStatusMsg(FDB_ST_UNABLE_TO_SEND, "Fail to send job to context");
+        return false;
+    }
+	
+	need fdb_msg->mContext        store
