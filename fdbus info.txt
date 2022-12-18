@@ -9,3 +9,66 @@
     }
 	
 	need fdb_msg->mContext        store
+	
+	server cpp
+	
+	void onInvoke(CBaseJob::Ptr &msg_ref)
+    {
+        auto msg = castToMessage<CBaseMessage *>(msg_ref);
+        switch (msg->code())
+        {
+            case XCLT_TEST_BI_DIRECTION:
+            {
+                incrementReceived(msg->getPayloadSize());
+                auto buffer = msg->getPayloadBuffer();
+                auto size = msg->getPayloadSize();
+                auto to_be_release = msg->ownBuffer();
+                msg->reply(msg_ref, buffer, size);
+                msg->releaseBuffer(to_be_release);
+            }
+            break;
+            case XCLT_TEST_SINGLE_DIRECTION:
+                incrementReceived(msg->getPayloadSize());
+                broadcast(XCLT_TEST_SINGLE_DIRECTION, msg->getPayloadBuffer(), msg->getPayloadSize(),
+                          "", msg->qos());
+            break;
+        }
+    }
+	
+	client cpp
+	void sendData() A线程发送
+	
+	void invokeMethod() B线程组装
+    {
+        incrementSend(fdb_block_size);
+        EFdbQOS qos;
+        if (fdb_secure_test)
+        {
+            qos = FDB_QOS_SECURE_RELIABLE;
+        }
+        else
+        {
+            qos = fdb_udp_test ? FDB_QOS_BEST_EFFORTS : FDB_QOS_RELIABLE;
+        }
+        if (fdb_sync_invoke)
+        {
+            CBaseJob::Ptr ref(new CBaseMessage(XCLT_TEST_BI_DIRECTION, qos));
+            invoke(ref, mBuffer, fdb_block_size);
+            handleReply(ref);
+        }
+        else
+        {
+            invoke(XCLT_TEST_BI_DIRECTION, mBuffer, fdb_block_size, 0, qos);
+        }
+    }
+	
+	//这个标记位需要确认一下
+	EFdbQOS qos;
+	if (fdb_secure_test)
+	{
+		qos = FDB_QOS_SECURE_RELIABLE;
+	}
+	else
+	{
+		qos = fdb_udp_test ? FDB_QOS_BEST_EFFORTS : FDB_QOS_RELIABLE;
+	}
