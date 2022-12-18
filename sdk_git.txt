@@ -1,0 +1,61 @@
+https://github.com/protocolbuffers/protobuf.git
+https://gitee.com/jeremyczhen/fdbus.git
+
+
+
+FDBUS编译和使用
+--------------------------------------------------------------------
+Lee_5566
+IP属地: 重庆
+0.614
+2021.12.31 19:30:03
+字数 62
+阅读 2,096
+image.png
+源码下载
+git clone https://gitee.com/jeremyczhen/fdbus.git
+下载和编译protobuf
+fdbus的序列化使用了protobuf。
+--------------------------------------------------------------------
+cd ~/workspace
+git clone https://github.com/protocolbuffers/protobuf.git
+cd protobuf
+git submodule update --init --recursive
+mkdir -p build/install
+cd build
+
+cmake -DCMAKE_INSTALL_PREFIX=install -DBUILD_SHARED_LIBS=1 ../cmake
+make -j4 install
+下载和编译fdbus
+cd ~/workspace
+git clone https://gitee.com/jeremyczhen/fdbus.git
+cd fdbus
+mkdir -p build/install
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=install ../cmake
+make install
+编译fdbus example
+注意其中的路径，要改成自己的。
+
+cd ~/workspace/fdbus
+mkdir -p build-example/install
+cd build-example
+cmake -DSYSTEM_ROOT="~/workspace/protobuf/build/install;~/workspace/fdbus/build/install" -DCMAKE_INSTALL_PREFIX=install ../cmake/pb-example
+
+PATH=~/workspace/protobuf/build/install/bin:$PATH make install
+运行fdbus实例
+run name service
+cd ~/workspace/fdbus/build
+./name_server
+run test server
+cd ~/workspace/fdbus/build-example
+./fdbservertest my_test
+run test client
+cd ~/workspace/build-example
+./fdbclienttest my_test
+run log server
+cd ~/workspace/fdbus/build
+./logsvc
+
+备注 需要安装 git python cmake3.16以上 
+在windows 下面需要安装vs， 需要打开vs来构建 然后启动
