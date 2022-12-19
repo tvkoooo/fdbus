@@ -1,0 +1,8 @@
+syntax = "proto2";
+package infos;
+
+
+message one{
+    optional int32 id=1;
+    repeated int32 ints =2;
+}
