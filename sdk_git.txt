@@ -24,8 +24,8 @@ git submodule update --init --recursive
 mkdir -p build/install
 cd build
 
-cmake -DCMAKE_INSTALL_PREFIX=install -DBUILD_SHARED_LIBS=1 ../cmake
-make -j4 install
+cmake -DCMAKE_INSTALL_PREFIX=install -DBUILD_SHARED_LIBS=1 ../cmake -A Win32              32位          （cmake .. -G "Visual Studio 16 2019" -A Win32）
+cmake -DCMAKE_INSTALL_PREFIX=install -DBUILD_SHARED_LIBS=1 ../cmake                        64位         （cmake .. -G "Visual Studio 16 2019"）
 下载和编译fdbus
 cd ~/workspace
 git clone https://gitee.com/jeremyczhen/fdbus.git
@@ -59,3 +59,8 @@ cd ~/workspace/fdbus/build
 
 备注 需要安装 git python cmake3.16以上 
 在windows 下面需要安装vs， 需要打开vs来构建 然后启动
+
+
+
+git 代码
+添加git根目录代码环境变量：   FDBUS_TOOLS_PATH         H:\git\fdbus\fdbus_learn
