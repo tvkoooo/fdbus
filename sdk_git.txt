@@ -69,3 +69,9 @@ FDBUS_TOOLS_PATH         H:\git\fdbus\fdbus_learn
 PROTODEF_PATH            H:\git\fdbus\protobuf
 
 void CEventSubscribeHandle::broadcast(CFdbMessage *msg, FdbMsgCode_t event)
+
+
+printf("log_flag_1:%d code=%d data=%d name:%s \n", ++num, code, dat, this->name().c_str());
+auto server1 = new CXServer("org.fdbus.xtest-server1");
+server1->bind();
+
