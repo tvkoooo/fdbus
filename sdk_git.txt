@@ -32,7 +32,7 @@ git clone https://gitee.com/jeremyczhen/fdbus.git
 cd fdbus
 mkdir -p build/install
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=install ../cmake
+cmake -DCMAKE_INSTALL_PREFIX=install ../cmake -A Win32
 make install
 编译fdbus example
 注意其中的路径，要改成自己的。
@@ -40,7 +40,7 @@ make install
 cd ~/workspace/fdbus
 mkdir -p build-example/install
 cd build-example
-cmake -DSYSTEM_ROOT="~/workspace/protobuf/build/install;~/workspace/fdbus/build/install" -DCMAKE_INSTALL_PREFIX=install ../cmake/pb-example
+cmake -DSYSTEM_ROOT="~/workspace/protobuf/build/install;~/workspace/fdbus/build/install" -DCMAKE_INSTALL_PREFIX=install ../cmake/pb-example -A Win32
 
 PATH=~/workspace/protobuf/build/install/bin:$PATH make install
 运行fdbus实例
@@ -63,4 +63,9 @@ cd ~/workspace/fdbus/build
 
 
 git 代码
-添加git根目录代码环境变量：   FDBUS_TOOLS_PATH         H:\git\fdbus\fdbus_learn
+添加git根目录代码环境变量：   
+FDBUS_TOOLS_PATH         H:\git\fdbus\fdbus_learn
+添加git根目录代码环境变量：
+PROTODEF_PATH            H:\git\fdbus\protobuf
+
+void CEventSubscribeHandle::broadcast(CFdbMessage *msg, FdbMsgCode_t event)
